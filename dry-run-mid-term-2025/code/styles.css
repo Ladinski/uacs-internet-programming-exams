@@ -32,6 +32,7 @@ body {
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 3px;
+    min-width: 100px;
   }
 
   .filters button {
@@ -68,7 +69,7 @@ body {
   }
 
   .author-data {
-    text-align: left;
+    text-align: center;
     padding: 5px;
     border: 1px solid #868686;
   }
@@ -97,6 +98,7 @@ body {
     width: 100%;
     height: 100%;
     background-color: rgba(0,0,0,0.7);
+    overflow-y: auto; /* Make modal scrollable */
   }
 
   #biblio-details-content {
@@ -104,12 +106,15 @@ body {
     padding: 30px;
     background-color: white;
     max-width: 800px;
+    max-height: 80vh; /* Limit height to 80% of viewport height */
     border-radius: 5px;
     position: relative;
+    overflow-y: auto; /* Make content scrollable */
   }
 
-  #biblio-details-content h2 {
-    margin-top: 0;
+  #biblio-list {
+    max-height: calc(80vh - 100px); /* Account for header and padding */
+    overflow-y: auto;
   }
 
   #close-modal {

@@ -1,5 +1,5 @@
 // API URL
-const API_URL = "https://raw.githubusercontent.com/sweko/uacs-internet-programming-exams/main/dry-run-mid-term-2025/data/authors.json";
+const API_URL = "https://raw.githubusercontent.com/Ladinski/uacs-internet-programming-exams/refs/heads/main/dry-run-mid-term-2025/data/authors.original.json";
 
 // Global state
 let authors = [];
@@ -54,7 +54,7 @@ function setupEventListeners() {
 function applyFilters() {
     const nameFilter = document.getElementById('name-search').value.toLowerCase().trim();
     const nationalityFilter = document.getElementById('nationality-search').value;
-    const aliveFilter = document.getElementById('alive-search').checked;
+    const aliveFilter = document.getElementById('alive-search').value;
     const yearFilter = document.getElementById('year-search').value;
 
     filteredAuthors = authors.filter(author => {
@@ -69,8 +69,13 @@ function applyFilters() {
         }
 
         // Alive filter
-        if (aliveFilter && author.death_date) {
-            return false;
+        if (aliveFilter !== 'all') {
+            if (aliveFilter === 'alive' && author.death_date) {
+                return false;
+            }
+            if (aliveFilter === 'dead' && !author.death_date) {
+                return false;
+            }
         }
 
         // Year filter
@@ -195,7 +200,9 @@ function getBibliographySummary(bibliography) {
     const typeCounts = {};
     
     bibliography.forEach(book => {
-        const type = book.type.charAt(0).toUpperCase() + book.type.slice(1).toLowerCase();
+        // const type = book.type.charAt(0).toUpperCase() + book.type.slice(1).toLowerCase();
+        book.type = book.type.charAt(0).toUpperCase() + book.type.slice(1).toLowerCase();
+        const type = book.type;
         typeCounts[type] = (typeCounts[type] || 0) + 1;
     });
 
@@ -295,11 +302,7 @@ function createAuthorRow(author) {
     // Alive
     const aliveDiv = document.createElement('div');
     aliveDiv.className = 'author-data';
-    const aliveCheckbox = document.createElement('input');
-    aliveCheckbox.type = 'checkbox';
-    aliveCheckbox.checked = !author.death_date;
-    aliveCheckbox.disabled = true;
-    aliveDiv.appendChild(aliveCheckbox);
+    aliveDiv.textContent = author.death_date ? 'Dead' : 'Alive';
     row.appendChild(aliveDiv);
 
     // Age
